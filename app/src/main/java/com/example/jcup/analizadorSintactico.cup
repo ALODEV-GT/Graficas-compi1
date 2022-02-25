@@ -1,0 +1,127 @@
+package midik.pruebaspractica1compi1.jcup;
+import java_cup.runtime.Symbol;
+
+parser code
+{:
+    private String definiciones = "";
+    private String ejecuciones = "";
+    private Symbol s;
+    
+    public void syntax_error(Symbol s){
+        this.s = s;
+    }
+
+    public Symbol getS(){
+        return this.s;
+    }
+
+    public String getDefiniciones(){
+        return this.definiciones;
+    }
+
+    public String getEjecuciones(){
+        return this.ejecuciones;
+    }
+
+    private void agregarDefinicion(String definicion){
+        this.definiciones = definicion + this.definiciones;
+    }
+
+    private void agregarEjecucion(String ejecucion){
+        if(ejecucion !=null){
+            this.ejecuciones+=ejecucion;
+        }
+    }
+
+
+:};
+
+terminal String DEF, BARRAS, PIE, TITULO, EJEX, EJEY, ETIQUETAS, VALORES, UNIR, TIPO, CANTIDAD,
+         PORCENTAJE, TOTAL, EXTRA, EJECUTAR, SIGNO_MAS, SIGNO_MENOS, SIGNO_POR, SIGNO_DIVISION,
+         PARENTESIS_A, PARENTESIS_C, CORCHETE_A, CORCHETE_C, LLAVE_A, LLAVE_C, DOS_PUNTOS, PUNTO_COMA,
+         COMA, PALABRA;
+
+terminal Integer ENTERO;
+terminal Double DECIMAL;
+
+non terminal String i, d, j, c, t, a, p, e, q, s, f, etiqueta, g, valor, h, tuplas, u, tipo, l, r, n, o;
+non terminal Integer expr, numero;
+
+precedence left SIGNO_MAS, SIGNO_MENOS;
+precedence left SIGNO_POR, SIGNO_DIVISION;
+precedence left PARENTESIS_A, PARENTESIS_C;
+
+start with i;
+
+i ::= DEF d:p1 j                                                      {: agregarDefinicion(p1);   :}
+;                                                               
+d ::= PIE:p1 LLAVE_A a:p3 LLAVE_C                                      {: RESULT = p1 + "%" + p3+"&"; :}
+    | BARRAS:p1 LLAVE_A e:p3 LLAVE_C                                   {: RESULT = p1 + "%" + p3+"&"; :}
+;                                              
+j ::= c:p1                                                                      {:RESULT = p1; :}
+    | i:p1                                                                      {:RESULT = p1; :}
+;                                                                     
+c ::= t:p1                                                                      {:RESULT = p1; :}
+    | t:p1 c:p2                                                                 {:RESULT = p1 + p2; :}
+;
+t ::= EJECUTAR PARENTESIS_A PALABRA:p1 PARENTESIS_C PUNTO_COMA      {: agregarEjecucion(p1 + "%");:}
+;
+a ::= p:p1                                                                      {:RESULT = p1; :}
+    | p:p1 a:p2                                                                    {:RESULT = p1 + p2; :}
+;
+p ::= s:p1                                                                      {:RESULT = p1 + "%"; :}           
+    | f:p1                                                                      {:RESULT = p1 + "%"; :}       
+    | g:p1                                                                      {:RESULT = p1 + "%"; :}       
+    | h:p1                                                                      {:RESULT = p1 + "%"; :}       
+    | u:p1                                                                      {:RESULT = p1 + "%"; :}       
+    | l:p1                                                                      {:RESULT = p1 + "%"; :}       
+    | r:p1                                                                      {:RESULT = p1 + "%"; :}
+;
+e ::= q:p1                                                                      {:RESULT = p1; :}
+    | q:p1 e:p2                                                                    {:RESULT = p1 + p2; :}
+;
+q ::= s:p1                                                                      {:RESULT = p1 + "%"; :}
+    | n:p1                                                                      {:RESULT = p1 + "%"; :}
+    | o:p1                                                                      {:RESULT = p1 + "%"; :}
+    | h:p1                                                                      {:RESULT = p1 + "%"; :}
+;
+s ::= TITULO:p1 DOS_PUNTOS:p2 PALABRA:p3 PUNTO_COMA                                 {:RESULT = p1 + p2 + p3; :}
+;
+f ::= ETIQUETAS:p1 DOS_PUNTOS:p2 CORCHETE_A etiqueta:p4 CORCHETE_C PUNTO_COMA        {:RESULT = p1 + p2 + p4; :}
+;
+etiqueta ::= PALABRA:p1                                                         {:RESULT = p1; :}
+           | PALABRA:p1 COMA:p2 etiqueta:p3                                     {:RESULT = p1 + p2 + p3; :}
+;
+g ::= VALORES:p1 DOS_PUNTOS:p2 CORCHETE_A valor:p4 CORCHETE_C PUNTO_COMA              {:RESULT = p1 + p2 + p4; :}
+;
+valor ::= expr:p1                                                               {:RESULT = p1 + ""; :}
+        | expr:p1 COMA:p2 valor:p3                                                  {:RESULT = p1 + p2 + p3; :}
+;
+h ::= UNIR:p1 DOS_PUNTOS:p2 CORCHETE_A tuplas:p4 CORCHETE_C PUNTO_COMA                {:RESULT = p1 + p2 + p4; :}
+;
+tuplas ::= LLAVE_A expr:p2 COMA:p3 expr:p4 LLAVE_C                                    {:RESULT = p2 + p3 + p4 + "#"; :}
+        |  LLAVE_A expr:p2 COMA:p3 expr:p4 LLAVE_C COMA tuplas:p7                  {:RESULT = p2 + p3 + p4 + "#" + p7; :}
+;
+u ::= TIPO:p1 DOS_PUNTOS:p2 tipo:p3 PUNTO_COMA                                        {:RESULT = p1 + p2 + p3; :}
+;
+tipo ::= CANTIDAD:p1                                                            {:RESULT = p1; :}
+       | PORCENTAJE:p1                                                          {:RESULT = p1; :}
+;
+l ::= EXTRA:p1 DOS_PUNTOS:p2 PALABRA:p3 PUNTO_COMA                                    {:RESULT = p1 + p2 + p3; :}
+;
+r ::= TOTAL:p1 DOS_PUNTOS:p2 expr:p3 PUNTO_COMA                                     {:RESULT = p1 + p2 + p3; :}
+;
+n ::= EJEX:p1 DOS_PUNTOS:p2 CORCHETE_A etiqueta:p4 CORCHETE_C PUNTO_COMA              {:RESULT = p1 + p2 + p4; :}
+;
+o ::= EJEY:p1 DOS_PUNTOS:p2 CORCHETE_A valor:p4 CORCHETE_C PUNTO_COMA               {:RESULT = p1 + p2 + p4; :}
+;
+expr ::= expr:p1 SIGNO_MAS expr:p2                                      {:RESULT = new Integer(p1+p2); System.out.println("SUMA: " + (p1+p2));:}
+       | expr:p1 SIGNO_MENOS expr:p2                                    {:RESULT = new Integer(p1-p2); :}
+       | expr:p1 SIGNO_POR expr:p2                                      {:RESULT = new Integer(p1*p2); :}
+       | expr:p1 SIGNO_DIVISION expr:p2                                 {:RESULT = new Integer(p1/p2); :}
+       | PARENTESIS_A expr:p1 PARENTESIS_C                              {:RESULT = new Integer(p1); :}
+       | numero:p1                                                      {:RESULT = new Integer(p1); :}
+;
+numero ::= ENTERO:p1                                                    {:RESULT = new Integer(p1); :}
+         | DECIMAL:p1                                                   {:RESULT = p1.intValue(); :}
+;
