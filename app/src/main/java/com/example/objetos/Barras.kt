@@ -1,17 +1,24 @@
 package com.example.objetos
 
 import com.example.excepciones.MisExcepciones
+import java.io.Serializable
 
-class Barras(
-                val TIPO: String = "BARRAS",
-                titulo: String? = null,
-                var ejex: List<String>? = null,
-                var ejey: List<Int>? = null,
-                uniones: List<String>? = null
-            ): Grafica(titulo, uniones) {
+class Barras: Grafica, Serializable {
+    val TIPO: String = "BARRAS"
+    var ejex: List<String>? = null
+    var ejey: List<Int>? = null
+
+    constructor(ejex: List<String>, titulo: String, ejey: List<Int>, uniones: List<String>){
+        super.uniones = uniones
+        super.titulo = titulo
+        this.ejex = ejex
+        this.ejey = ejey
+    }
+
+    constructor()
+
     private val datosEjeX: MutableList<String> = mutableListOf();
     private val datosEjeY: MutableList<Double> = mutableListOf();
-
 
     override fun validarDatosGrafica(){
         this.datosEjeX.clear()

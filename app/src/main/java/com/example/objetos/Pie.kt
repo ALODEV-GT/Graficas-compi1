@@ -1,17 +1,29 @@
 package com.example.objetos
 
 import com.example.excepciones.MisExcepciones
+import java.io.Serializable
 
-class Pie(
-            val TIPO: String = "PIE",
-            titulo: String? = null,
-            var etiquetas: List<String>?=null,
-            var valores: List<Int>?=null,
-            var tipo: String?=null,
-            var total: Int?=null,
-            var extra: String?=null,
-            uniones: List<String>? = null
-         ): Grafica(titulo,uniones) {
+class Pie: Grafica, Serializable{
+
+    val TIPO: String = "PIE"
+    var etiquetas: List<String>?=null
+    var valores: List<Int>?=null
+    var tipo: String?=null
+    var total: Int?=null
+    var extra: String?=null
+
+    constructor(titulo: String, etiquetas: List<String>, valores: List<Int>, tipo: String,total: Int, extra: String){
+        super.titulo = titulo
+        super.uniones = uniones
+        this.etiquetas = etiquetas
+        this.valores = valores
+        this.tipo = tipo
+        this.total = total
+        this.extra = extra
+    }
+
+    constructor(){}
+
     private val datosEtiquetas: MutableList<String> = mutableListOf();
     private val datosValores: MutableList<Double> = mutableListOf();
 
