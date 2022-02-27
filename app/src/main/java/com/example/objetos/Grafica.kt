@@ -9,4 +9,8 @@ open class Grafica(
         return "ToString: GRAFICA"
     }
 
+    open fun validarDatosGrafica(){
+
+    }
+
 }

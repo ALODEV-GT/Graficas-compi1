@@ -10,6 +10,18 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Practica1Comp1">
         <activity
+            android:name=".Graficas"
+            android:exported="false" />
+        <activity
+            android:name=".RepErrores"
+            android:exported="false" />
+        <activity
+            android:name=".RepGraficasDefinidas"
+            android:exported="false" />
+        <activity
+            android:name=".RepOperadoresAritmeticos"
+            android:exported="false" />
+        <activity
             android:name=".MainActivity"
             android:exported="true">
             <intent-filter>

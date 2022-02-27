@@ -84,7 +84,11 @@ class CargaDatos(entrada: String , private var graficasObj: MutableMap<String, G
 
     private fun agregarUnir(atributo: String, grafica: Grafica) {
         val uniones = atributo.split(":")[1]
-        val parUniniones: List<String> = uniones.split("#")
+        val partes: List<String> = uniones.split("#")
+        val parUniniones: MutableList<String> = mutableListOf();
+        for (i in 0 until (partes.size-1)) {
+            parUniniones.add(partes[i])
+        }
         grafica.uniones = parUniniones
     }
 
@@ -96,9 +100,13 @@ class CargaDatos(entrada: String , private var graficasObj: MutableMap<String, G
     }
 
     private fun agregarEjeY(atributo: String, grafica: Barras) {
-        val pares = atributo.split(":")[1]
-        val paresEjeY: List<String> = pares.split(",")
-        grafica.ejey = paresEjeY
+        val partesString = atributo.split(":")[1]
+        val partes: List<String> = partesString.split(",")
+        val partesInt: MutableList<Int> = mutableListOf();
+        for (element in partes) {
+            partesInt.add(element.toInt())
+        }
+        grafica.ejey = partesInt
     }
 
     //Pie
@@ -113,9 +121,13 @@ class CargaDatos(entrada: String , private var graficasObj: MutableMap<String, G
     }
 
     private fun agregarValores(atributo: String, grafica: Pie) {
-        val valores = atributo.split(":")[1]
-        val valoresInd: List<String> = valores.split(",")
-        grafica.valores = valoresInd
+        val valoresString = atributo.split(":")[1]
+        val partes: List<String> = valoresString.split(",")
+        val partesInt: MutableList<Int> = mutableListOf();
+        for (element in partes) {
+            partesInt.add(element.toInt())
+        }
+        grafica.valores = partesInt
     }
 
     private fun agregarTotal(atributo: String, grafica: Pie) {
@@ -131,7 +143,12 @@ class CargaDatos(entrada: String , private var graficasObj: MutableMap<String, G
         var texto: String = ""
         for (grafica in graficasObj){
             texto += grafica.value.toString()+"\n"
+            grafica.value.validarDatosGrafica()
         }
         return texto
+    }
+
+    fun getGraficas(): MutableMap<String, Grafica> {
+        return this.graficasObj
     }
 }

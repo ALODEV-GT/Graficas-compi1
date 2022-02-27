@@ -1,7 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+<androidx.constraintlayout.widget.ConstraintLayout
+    android:id="@+id/hola"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context="com.example.practica1comp1.MainActivity">
@@ -10,54 +15,121 @@
         android:id="@+id/tvEtrada"
         android:layout_width="358dp"
         android:layout_height="27dp"
-        android:layout_marginBottom="500dp"
+        android:layout_x="39dp"
+        android:layout_y="11dp"
         android:fontFamily="sans-serif-black"
         android:text="ENTRADA"
         android:textAlignment="center"
         android:textSize="20sp"
         app:layout_constraintBottom_toBottomOf="parent"
-        tools:layout_editor_absoluteX="1dp" />
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.026" />
 
     <EditText
         android:id="@+id/etEntrada"
-        android:layout_width="358dp"
-        android:layout_height="196dp"
-        android:layout_marginBottom="304dp"
+        android:layout_width="356dp"
+        android:layout_height="252dp"
+        android:layout_marginBottom="272dp"
+        android:layout_x="17dp"
+        android:layout_y="38dp"
         android:ems="10"
         android:gravity="start|top"
         android:inputType="textMultiLine"
         app:layout_constraintBottom_toBottomOf="parent"
-        tools:layout_editor_absoluteX="1dp" />
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.666"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tvEtrada"
+        app:layout_constraintVertical_bias="0.0" />
 
-    <TextView
-        android:id="@+id/tvSalida"
-        android:layout_width="358dp"
-        android:layout_height="30dp"
-        android:layout_marginBottom="276dp"
-        android:fontFamily="sans-serif-black"
-        android:text="SALIDA"
-        android:textAlignment="center"
-        android:textSize="20sp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        tools:layout_editor_absoluteX="1dp" />
+    <Button
+        android:id="@+id/btnVerGraficas"
+        android:layout_width="154dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:layout_x="192dp"
+        android:layout_y="314dp"
+        android:onClick="verGraficas"
+        android:text="Ver graficas"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.567"
+        app:layout_constraintStart_toEndOf="@+id/btnAnalizar"
+        app:layout_constraintTop_toBottomOf="@+id/etEntrada" />
 
     <Button
         android:id="@+id/btnAnalizar"
-        android:layout_width="358dp"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="16dp"
-        android:onClick="message"
+        android:layout_width="153dp"
+        android:layout_height="47dp"
+        android:layout_marginTop="8dp"
+        android:layout_x="16dp"
+        android:layout_y="314dp"
+        android:onClick="analizar"
         android:text="Analizar"
-        app:layout_constraintBottom_toBottomOf="parent"
-        tools:layout_editor_absoluteX="1dp" />
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.077"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/etEntrada" />
+
+    <Button
+        android:id="@+id/btnRepOpAritmeticos"
+        android:layout_width="245dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:layout_x="64dp"
+        android:layout_y="400dp"
+        android:onClick="reporteOperadoresAritmeticos"
+        android:text="Operadores aritmeticos"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tvReportes" />
+
+    <Button
+        android:id="@+id/btnGraficosDefinidos"
+        android:layout_width="245dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="4dp"
+        android:layout_x="65dp"
+        android:layout_y="452dp"
+        android:onClick="reporteGraficasDefinidas"
+        android:text="Graficos definidos"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.508"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/btnRepOpAritmeticos" />
+
+    <Button
+        android:id="@+id/btnErrores"
+        android:layout_width="245dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="4dp"
+        android:layout_x="67dp"
+        android:layout_y="500dp"
+        android:onClick="reporteErrores"
+        android:text="ERRORES"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.516"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/btnGraficosDefinidos" />
 
     <TextView
-        android:id="@+id/tvLog"
+        android:id="@+id/tvReportes"
         android:layout_width="358dp"
-        android:layout_height="212dp"
-        android:layout_marginBottom="64dp"
-        android:text="Log"
+        android:layout_height="wrap_content"
+        android:layout_x="16dp"
+        android:layout_y="370dp"
+        android:text="REPORTES"
+        android:textAlignment="center"
+        android:textAllCaps="false"
+        android:textColor="#000000"
+        android:textSize="20dp"
+        android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="parent"
-        tools:layout_editor_absoluteX="1dp" />
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/btnAnalizar"
+        app:layout_constraintVertical_bias="0.046" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
+</ScrollView>
