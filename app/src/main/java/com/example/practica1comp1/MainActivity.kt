@@ -11,6 +11,7 @@ import com.example.cargarDatos.CargaDatos
 import com.example.excepciones.MisExcepciones
 import com.example.jcup.parser
 import com.example.jlex.AnalizadorLexico
+import com.example.objetos.Ejecuciones
 import com.example.objetos.Grafica
 import java.io.StringReader
 
@@ -20,7 +21,8 @@ class MainActivity : AppCompatActivity() {
     private var btnRepGraficosDefinidos: Button? = null
     private var btnRepErrores: Button? = null
 
-    private var graficasObj: MutableMap<String, Grafica>? = null;
+    private var graficasObj: ArrayList<Grafica>? = null
+    private var ejecuciones: ArrayList<String>? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -52,12 +54,10 @@ class MainActivity : AppCompatActivity() {
 
     fun verGraficas(view: View) {
         val intent = Intent(this, Graficas::class.java)
-        var bundle: Bundle = Bundle()
-        for (grafica in graficasObj!!){
-            bundle.putSerializable(grafica.key, grafica.value)
-        }
-        val oe: String
-
+        val bundle = Bundle()
+        bundle.putSerializable("graficas", this.graficasObj!!)
+        bundle.putSerializable("ejecuciones", this.ejecuciones!!)
+        intent.putExtras(bundle)
         startActivity(intent)
     }
 
@@ -71,8 +71,11 @@ class MainActivity : AppCompatActivity() {
             analizadorSintactico.parse()
             Toast.makeText(applicationContext, "Analisis completado correctamente", Toast.LENGTH_SHORT).show()
             val cargarDatos = CargaDatos(analizadorSintactico.definiciones)
-            println(cargarDatos.graficasObjetos())
+            println(analizadorSintactico.ejecuciones)
             this.graficasObj = cargarDatos.getGraficas()
+            cargarDatos.validarGraficas()
+            val obEjecuciones = Ejecuciones(analizadorSintactico.ejecuciones)
+            this.ejecuciones = obEjecuciones.ejecuciones
             desactivarActivarBotonesAnalisisCorrecto()
         } catch (e: MisExcepciones) {
             Toast.makeText(applicationContext, e.message, Toast.LENGTH_SHORT).show()

@@ -6,7 +6,7 @@ import com.example.objetos.Grafica
 import com.example.objetos.Pie
 
 
-class CargaDatos(entrada: String , private var graficasObj: MutableMap<String, Grafica> = mutableMapOf()) {
+class CargaDatos(entrada: String, private var graficasObj: ArrayList<Grafica> = ArrayList()) {
     private val graficas = entrada.split("&")
 
     init {
@@ -42,14 +42,14 @@ class CargaDatos(entrada: String , private var graficasObj: MutableMap<String, G
         for (i in 1 until atributos.size - 1) {
             agregarAtributoGraficaBarras(atributos[i], graficaBarra)
         }
-        this.graficasObj[graficaBarra.titulo!!] = graficaBarra
+        this.graficasObj.add(graficaBarra)
     }
 
     private fun construirGraficaPie(atributos: List<String>, graficaPie: Pie) {
         for (i in 1 until atributos.size - 1) {
             this.agregarAtributoGraficaPie(atributos[i], graficaPie)
         }
-        this.graficasObj[graficaPie.titulo!!] = graficaPie
+        this.graficasObj.add(graficaPie)
     }
 
     private fun agregarAtributoGraficaPie(atributos: String, graficaPie: Pie) {
@@ -78,7 +78,7 @@ class CargaDatos(entrada: String , private var graficasObj: MutableMap<String, G
     }
 
     //Comunes
-    private fun agregarTitulo(atributo:String, grafica: Grafica) {
+    private fun agregarTitulo(atributo: String, grafica: Grafica) {
         grafica.titulo = atributo.split(":")[1]
     }
 
@@ -86,7 +86,7 @@ class CargaDatos(entrada: String , private var graficasObj: MutableMap<String, G
         val uniones = atributo.split(":")[1]
         val partes: List<String> = uniones.split("#")
         val parUniniones: MutableList<String> = mutableListOf();
-        for (i in 0 until (partes.size-1)) {
+        for (i in 0 until (partes.size - 1)) {
             parUniniones.add(partes[i])
         }
         grafica.uniones = parUniniones
@@ -94,7 +94,7 @@ class CargaDatos(entrada: String , private var graficasObj: MutableMap<String, G
 
     //Barras
     private fun agregarEjeX(atributo: String, grafica: Barras) {
-        val pares = atributo.split(":")[1].replace("\"","")
+        val pares = atributo.split(":")[1].replace("\"", "")
         val paresEjeX: List<String> = pares.split(",")
         grafica.ejex = paresEjeX
     }
@@ -115,7 +115,7 @@ class CargaDatos(entrada: String , private var graficasObj: MutableMap<String, G
     }
 
     private fun agregarEtiquetas(atributo: String, grafica: Pie) {
-        val etiquetas = atributo.split(":")[1].replace("\"","")
+        val etiquetas = atributo.split(":")[1].replace("\"", "")
         val etiquetasInd: List<String> = etiquetas.split(",")
         grafica.etiquetas = etiquetasInd
     }
@@ -135,20 +135,18 @@ class CargaDatos(entrada: String , private var graficasObj: MutableMap<String, G
     }
 
     private fun agregarExtra(atributo: String, grafica: Pie) {
-        grafica.extra = atributo.split(":")[1].replace("\"","")
+        grafica.extra = atributo.split(":")[1].replace("\"", "")
     }
 
     //Otros
-    fun graficasObjetos(): String {
-        var texto: String = ""
-        for (grafica in graficasObj){
-            texto += grafica.value.toString()+"\n"
-            grafica.value.validarDatosGrafica()
+    fun validarGraficas() {
+        for (grafica in graficasObj) {
+            grafica.validarDatosGrafica()
         }
-        return texto
     }
 
-    fun getGraficas(): MutableMap<String, Grafica> {
+    fun getGraficas(): ArrayList<Grafica> {
         return this.graficasObj
     }
 }
+

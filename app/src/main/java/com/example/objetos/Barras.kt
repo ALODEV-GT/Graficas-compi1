@@ -24,6 +24,8 @@ class Barras: Grafica, Serializable {
         this.datosEjeX.clear()
         this.datosEjeY.clear()
 
+        verificarDatosCompletos()
+
         try {
             for (i in 0 until this.uniones!!.size) {
                 var par = this.uniones!![i].replace(" ","").split(",")
@@ -36,9 +38,11 @@ class Barras: Grafica, Serializable {
         }catch (e: Exception){
             throw MisExcepciones("Error en unir de la grafica ${super.titulo}")
         }
-
-        println("Datos ${super.titulo} EJEX: ${this.datosEjeX}")
-        println("Datos ${super.titulo} EJEY: ${this.datosEjeY}")
+    }
+    private fun verificarDatosCompletos(){
+        if(super.titulo == null || super.uniones == null || this.ejex == null || this.ejey == null){
+            throw MisExcepciones("Atributos incompletos. ")
+        }
     }
 
     fun getDatosEjeX(): MutableList<String> {
