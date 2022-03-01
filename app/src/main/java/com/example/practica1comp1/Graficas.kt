@@ -48,6 +48,7 @@ class Graficas : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_graficas)
+        this.setTitle(R.string.tituloApp)
         layout = findViewById<View>(R.id.layout) as LinearLayout
         val bundle = intent.extras
 

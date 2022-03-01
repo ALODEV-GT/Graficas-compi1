@@ -37,7 +37,8 @@ class MainActivity : AppCompatActivity() {
     private var operaciones: ArrayList<Operacion>? = null
 
     //Reporte de errores
-    private var errores: ArrayList<Error>? = null
+    private var erroresLexicos: ArrayList<Error> = ArrayList()
+    private var erroresSintacticos: ArrayList<Error> = ArrayList()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -56,7 +57,7 @@ class MainActivity : AppCompatActivity() {
     fun reporteOperadoresAritmeticos(view: View) {
         val intent = Intent(this, RepOperadoresAritmeticos::class.java)
         val bundle = Bundle()
-        this.operaciones!!.forEach{
+        this.operaciones!!.forEach {
             println(it.operador)
         }
 
@@ -76,12 +77,12 @@ class MainActivity : AppCompatActivity() {
 
     fun reporteErrores(view: View) {
         val intent = Intent(this, RepErrores::class.java)
-        val bundle = Bundle()
+        var bundle: Bundle? = null
 
-        if(this.errores != null){
-            bundle.putSerializable("errores", this.errores!!)
-            intent.putExtras(bundle)
-        }
+        bundle = Bundle()
+        bundle.putSerializable("erroresLexicos", this.erroresLexicos!!)
+        bundle.putSerializable("erroresSintacticos", this.erroresSintacticos!!)
+        intent.putExtras(bundle)
 
         startActivity(intent)
     }
@@ -105,25 +106,36 @@ class MainActivity : AppCompatActivity() {
             analizadorSintactico.parse()
             Toast.makeText(
                 applicationContext,
-                "Analisis completado correctamente",
+                "Analisis completado",
                 Toast.LENGTH_SHORT
             ).show()
             val cargarDatos = CargaDatos(analizadorSintactico.definiciones)
-            this.graficasObj = cargarDatos.getGraficas()
-            cargarDatos.validarGraficas()
-            val obEjecuciones = Ejecuciones(analizadorSintactico.ejecuciones)
-            this.ejecuciones = obEjecuciones.ejecuciones
-            desactivarActivarBotonesAnalisisCorrecto()
 
-            //PARA REPORTE DE ERRORES
-            this.errores = analizadorSintactico.errores
+            this.erroresSintacticos = analizadorSintactico.errores
+            this.erroresLexicos = analizadorLexico.errores
 
-            // PARA REPORTE DE OPERACIONES
-            this.operaciones = analizadorSintactico.operaciones
+            if (analizadorSintactico.errores.size > 0 || analizadorLexico.errores.size > 0){
+                println("-->>>>>>>>>>>>>>>>>>>>>>>>>> ENTRE A ERRORES")
+                //PARA REPORTE DE ERRORES
+                this.erroresSintacticos = analizadorSintactico.errores
+                this.erroresLexicos = analizadorLexico.errores
+                desactivarActivarBotonesAnalisisIncorrecto()
+            }else{
+                //PARA GRAFICAR
+                this.graficasObj = cargarDatos.getGraficas()
+                cargarDatos.validarGraficas()
+                val obEjecuciones = Ejecuciones(analizadorSintactico.ejecuciones)
+                this.ejecuciones = obEjecuciones.ejecuciones
 
-            //PARA REPORTE DE APARICION DE GRAFICAS
-            this.numGraficasBarras = analizadorSintactico.numGraficasBarras()
-            this.numGraficasPie = analizadorSintactico.numGraficasPie()
+                // PARA REPORTE DE OPERACIONES
+                this.operaciones = analizadorSintactico.operaciones
+
+                //PARA REPORTE DE APARICION DE GRAFICAS
+                this.numGraficasBarras = analizadorSintactico.numGraficasBarras()
+                this.numGraficasPie = analizadorSintactico.numGraficasPie()
+                desactivarActivarBotonesAnalisisCorrecto()
+            }
+
         } catch (e: MisExcepciones) {
             Toast.makeText(applicationContext, e.message, Toast.LENGTH_SHORT).show()
             desactivarActivarBotonesAnalisisIncorrecto()

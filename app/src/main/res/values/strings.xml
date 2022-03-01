@@ -3,7 +3,7 @@
     <string name="operadores_aritmeticos">Operadores aritmeticos</string>
     <string name="reporte">REPORTE</string>
     <string name="columna">Columna</string>
-    <string name="ocurrencias">Ocurrencias</string>
+    <string name="ocurrencia">Ocurrencias</string>
     <string name="linea">Linea</string>
     <string name="operador">Operador</string>
     <string name="tituloReporteOp">Reporte de operaciones</string>
@@ -11,4 +11,14 @@
     <string name="cantidad_de_definiciones">Cantidad de definiciones</string>
     <string name="tituloRepNumGraficas">Reporte de graficas</string>
     <string name="tituloApp">Graficas</string>
+    <string name="entrada">ENTRADA</string>
+    <string name="ver_graficas">Ver graficas</string>
+    <string name="analizar">Analizar</string>
+    <string name="graficos_definidos">Graficos definidos</string>
+    <string name="errores">ERRORES</string>
+    <string name="reportes">REPORTES</string>
+    <string name="tituloRepErrores">Reporte de errores</string>
+    <string name="descripcion">Descripcion</string>
+    <string name="tipo">Tipo</string>
+    <string name="lexema">Lexema</string>
 </resources>

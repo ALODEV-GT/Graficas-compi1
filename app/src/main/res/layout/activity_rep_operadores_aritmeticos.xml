@@ -62,7 +62,7 @@
                         android:layout_height="wrap_content"
                         android:layout_column="0"
                         android:layout_margin="3dp"
-                        android:text="@string/ocurrencias"
+                        android:text="@string/ocurrencia"
                         android:textStyle="bold" />
 
                 </TableRow>
