@@ -199,8 +199,6 @@ class Graficas : AppCompatActivity() {
         return pData
     }
 
-
-
     private fun getPieEntries(valores: MutableList<Double>): java.util.ArrayList<PieEntry> {
         val entries = java.util.ArrayList<PieEntry>()
         for (i in valores.indices) entries.add(PieEntry(valores[i].toFloat())) //Se agregan los valores a los pedazos del pie
