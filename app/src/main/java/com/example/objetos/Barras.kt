@@ -6,9 +6,9 @@ import java.io.Serializable
 class Barras: Grafica, Serializable {
     val TIPO: String = "BARRAS"
     var ejex: List<String>? = null
-    var ejey: List<Int>? = null
+    var ejey: List<Double>? = null
 
-    constructor(ejex: List<String>, titulo: String, ejey: List<Int>, uniones: List<String>){
+    constructor(ejex: List<String>, titulo: String, ejey: List<Double>, uniones: List<String>){
         super.uniones = uniones
         super.titulo = titulo
         this.ejex = ejex
@@ -29,10 +29,10 @@ class Barras: Grafica, Serializable {
         try {
             for (i in 0 until this.uniones!!.size) {
                 var par = this.uniones!![i].replace(" ","").split(",")
-                var ejex = par[0].toInt()
-                var ejey = par[1].toInt()
+                var ejex = par[0].toDouble().toInt()
+                var ejey = par[1].toDouble().toInt()
                 datosEjeX.add(this.ejex!![ejex])
-                datosEjeY.add(this.ejey!![ejey].toDouble())
+                datosEjeY.add(this.ejey!![ejey])
             }
 
         }catch (e: Exception){

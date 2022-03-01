@@ -102,9 +102,9 @@ class CargaDatos(entrada: String, private var graficasObj: ArrayList<Grafica> = 
     private fun agregarEjeY(atributo: String, grafica: Barras) {
         val partesString = atributo.split(":")[1]
         val partes: List<String> = partesString.split(",")
-        val partesInt: MutableList<Int> = mutableListOf();
+        val partesInt: MutableList<Double> = mutableListOf();
         for (element in partes) {
-            partesInt.add(element.toInt())
+            partesInt.add(element.toDouble())
         }
         grafica.ejey = partesInt
     }
@@ -123,15 +123,15 @@ class CargaDatos(entrada: String, private var graficasObj: ArrayList<Grafica> = 
     private fun agregarValores(atributo: String, grafica: Pie) {
         val valoresString = atributo.split(":")[1]
         val partes: List<String> = valoresString.split(",")
-        val partesInt: MutableList<Int> = mutableListOf();
+        val partesInt: MutableList<Double> = mutableListOf();
         for (element in partes) {
-            partesInt.add(element.toInt())
+            partesInt.add(element.toDouble())
         }
         grafica.valores = partesInt
     }
 
     private fun agregarTotal(atributo: String, grafica: Pie) {
-        grafica.total = atributo.split(":")[1].toInt()
+        grafica.total = atributo.split(":")[1].toDouble()
     }
 
     private fun agregarExtra(atributo: String, grafica: Pie) {

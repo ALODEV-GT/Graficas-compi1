@@ -7,17 +7,18 @@ class Pie : Grafica, Serializable {
 
     val TIPO: String = "PIE"
     var etiquetas: List<String>? = null
-    var valores: List<Int>? = null
+    var valores: List<Double>? = null
     var tipo: String? = null
-    var total: Int? = null
+    var total: Double? = null
     var extra: String? = null
+    private var valorTotal: Double = 0.0
 
     constructor(
         titulo: String,
         etiquetas: List<String>,
-        valores: List<Int>,
+        valores: List<Double>,
         tipo: String,
-        total: Int,
+        total: Double,
         extra: String
     ) {
         super.titulo = titulo
@@ -38,16 +39,34 @@ class Pie : Grafica, Serializable {
         this.datosEtiquetas.clear()
         this.datosValores.clear()
 
+        verificarDatosCompletos()
+
         try {
             for (i in 0 until this.uniones!!.size) {
                 var par = this.uniones!![i].replace(" ", "").split(",")
-                var ejex = par[0].toInt()
-                var ejey = par[1].toInt()
+                var ejex = par[0].toDouble().toInt()
+                var ejey = par[1].toDouble().toInt()
                 datosEtiquetas.add(this.etiquetas!![ejex])
                 datosValores.add(this.valores!![ejey].toDouble())
+                this.valorTotal+=this.valores!![ejey].toDouble()
             }
+            agregarExtra()
         } catch (e: Exception) {
             throw MisExcepciones("Error en unir de la grafica ${super.titulo}")
+        }
+    }
+
+    private fun agregarExtra(){
+        var valorExtra = 0.0
+        if(tipo == "Porcentaje"){
+            valorExtra = 360 - valorTotal
+        }else{
+            valorExtra = total!! - valorTotal
+        }
+
+        if (valorExtra > 0.0){
+            datosEtiquetas.add(this.extra!!)
+            datosValores.add(valorExtra)
         }
     }
 

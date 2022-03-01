@@ -111,11 +111,7 @@ class MainActivity : AppCompatActivity() {
             ).show()
             val cargarDatos = CargaDatos(analizadorSintactico.definiciones)
 
-            this.erroresSintacticos = analizadorSintactico.errores
-            this.erroresLexicos = analizadorLexico.errores
-
             if (analizadorSintactico.errores.size > 0 || analizadorLexico.errores.size > 0){
-                println("-->>>>>>>>>>>>>>>>>>>>>>>>>> ENTRE A ERRORES")
                 //PARA REPORTE DE ERRORES
                 this.erroresSintacticos = analizadorSintactico.errores
                 this.erroresLexicos = analizadorLexico.errores
@@ -140,6 +136,7 @@ class MainActivity : AppCompatActivity() {
             Toast.makeText(applicationContext, e.message, Toast.LENGTH_SHORT).show()
             desactivarActivarBotonesAnalisisIncorrecto()
         } catch (e: java.lang.Exception) {
+            e.printStackTrace()
             Toast.makeText(applicationContext, "Error sintactico", Toast.LENGTH_SHORT).show()
             desactivarActivarBotonesAnalisisIncorrecto()
         }

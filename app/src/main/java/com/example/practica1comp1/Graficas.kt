@@ -17,9 +17,11 @@ import com.github.mikephil.charting.components.LegendEntry
 import com.github.mikephil.charting.components.XAxis
 import com.github.mikephil.charting.components.YAxis
 import com.github.mikephil.charting.data.*
+import com.github.mikephil.charting.formatter.IValueFormatter
 import com.github.mikephil.charting.formatter.IndexAxisValueFormatter
 import com.github.mikephil.charting.formatter.PercentFormatter
-
+import com.github.mikephil.charting.utils.ViewPortHandler
+import java.text.NumberFormat
 
 class Graficas : AppCompatActivity() {
     private var layout: LinearLayout? = null
@@ -182,16 +184,22 @@ class Graficas : AppCompatActivity() {
         pieChart.transparentCircleRadius = 30f //Radio del circulo semi-transparente del centro
         pieChart.setTransparentCircleColor(Color.argb(150,255, 232, 214)) //Color del circulo semi-transparente del centro
         pieChart.invalidate()
-        pieChart.data = getPieData(grafica.getDatosValores()) //
+        pieChart.setUsePercentValues(true)
+        pieChart.data = getPieData(grafica.getDatosValores(), pieChart)
         pieChart.isDrawHoleEnabled = true //Activar/desactivar circulo del centro
     }
 
-    private fun getPieData(valores: MutableList<Double>): PieData {
+    private fun getPieData(valores: MutableList<Double>, pieChart: PieChart): PieData {
         val pieDataSet = getDataSame(PieDataSet(getPieEntries(valores), "")) as PieDataSet
         pieDataSet.sliceSpace = 2f // Espacio entre las partes del Pie
-        pieDataSet.valueFormatter = PercentFormatter()
-        return PieData(pieDataSet)
+        pieDataSet.valueTextSize=14f
+        val pData: PieData = PieData(pieDataSet)
+        pData.setValueFormatter(PercentFormatter(pieChart))
+        pData.setDrawValues(true)
+        return pData
     }
+
+
 
     private fun getPieEntries(valores: MutableList<Double>): java.util.ArrayList<PieEntry> {
         val entries = java.util.ArrayList<PieEntry>()

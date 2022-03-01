@@ -82,7 +82,7 @@ terminal Integer ENTERO;
 terminal Double DECIMAL;
 
 non terminal String i, d, j, c, t, a, p, e, q, s, f, etiqueta, g, valor, h, tuplas, u, tipo, l, r, n, o;
-non terminal Integer expr, numero;
+non terminal Double expr, numero;
 
 precedence left SIGNO_MAS, SIGNO_MENOS;
 precedence left SIGNO_POR, SIGNO_DIVISION;
@@ -156,13 +156,13 @@ n ::= EJEX:p1 DOS_PUNTOS:p2 CORCHETE_A etiqueta:p4 CORCHETE_C PUNTO_COMA        
 ;
 o ::= EJEY:p1 DOS_PUNTOS:p2 CORCHETE_A valor:p4 CORCHETE_C PUNTO_COMA               {:RESULT = p1 + p2 + p4; :}
 ;
-expr ::= expr:p1 SIGNO_MAS expr:p2                                      {:RESULT = new Integer(p1+p2);    operaciones.add( new Operacion("Suma",p1right ,p1left,  p1 +"+"+p2)); :}
-       | expr:p1 SIGNO_MENOS expr:p2                                    {:RESULT = new Integer(p1-p2);        operaciones.add( new Operacion("Resta",p1right ,p1left,  p1+ "-"+p2)); :}
-       | expr:p1 SIGNO_POR expr:p2                                      {:RESULT = new Integer(p1*p2);          operaciones.add( new Operacion("Multiplicacion",p1right ,p1left,  p1 +"*"+ p2));  :}
-       | expr:p1 SIGNO_DIVISION expr:p2                                 {:RESULT = new Integer(p1/p2);        operaciones.add( new Operacion("Division",p1right ,p1left, p1+ "/"+p2)); :}
-       | PARENTESIS_A expr:p1 PARENTESIS_C                              {:RESULT = new Integer(p1); :}
-       | numero:p1                                                      {:RESULT = new Integer(p1); :}
+expr ::= expr:p1 SIGNO_MAS expr:p2                                      {:RESULT = new Double(p1+p2);    operaciones.add( new Operacion("Suma",p1right ,p1left,  p1 +"+"+p2)); :}
+       | expr:p1 SIGNO_MENOS expr:p2                                    {:RESULT = new Double(p1-p2);        operaciones.add( new Operacion("Resta",p1right ,p1left,  p1+ "-"+p2)); :}
+       | expr:p1 SIGNO_POR expr:p2                                      {:RESULT = new Double(p1*p2);          operaciones.add( new Operacion("Multiplicacion",p1right ,p1left,  p1 +"*"+ p2));  :}
+       | expr:p1 SIGNO_DIVISION expr:p2                                 {:RESULT = new Double(p1/p2);        operaciones.add( new Operacion("Division",p1right ,p1left, p1+ "/"+p2)); :}
+       | PARENTESIS_A expr:p1 PARENTESIS_C                              {:RESULT = new Double(p1); :}
+       | numero:p1                                                      {:RESULT = new Double(p1); :}
 ;
-numero ::= ENTERO:p1                                                    {:RESULT = new Integer(p1); :}
-         | DECIMAL:p1                                                   {:RESULT = p1.intValue(); :}
+numero ::= ENTERO:p1                                                    {:RESULT = new Double(p1); :}
+         | DECIMAL:p1                                                   {:RESULT = p1; :}
 ;
