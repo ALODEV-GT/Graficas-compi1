@@ -9,13 +9,14 @@ package com.example.jcup;
 public class sym {
   /* terminals */
   public static final int SIGNO_MAS = 17;
-  public static final int DECIMAL = 32;
+  public static final int DECIMAL = 33;
   public static final int PALABRA = 30;
   public static final int ETIQUETAS = 8;
   public static final int EJECUTAR = 16;
   public static final int DOS_PUNTOS = 27;
   public static final int TIPO = 11;
   public static final int PORCENTAJE = 13;
+  public static final int ERRORS = 31;
   public static final int SIGNO_DIVISION = 20;
   public static final int BARRAS = 3;
   public static final int VALORES = 9;
@@ -36,7 +37,7 @@ public class sym {
   public static final int LLAVE_A = 25;
   public static final int EJEY = 7;
   public static final int EJEX = 6;
-  public static final int ENTERO = 31;
+  public static final int ENTERO = 32;
   public static final int CORCHETE_C = 24;
   public static final int CORCHETE_A = 23;
   public static final int UNIR = 10;
@@ -73,6 +74,7 @@ public class sym {
   "PUNTO_COMA",
   "COMA",
   "PALABRA",
+  "ERRORS",
   "ENTERO",
   "DECIMAL"
   };

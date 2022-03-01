@@ -1,14 +1,51 @@
 package midik.pruebaspractica1compi1.jcup;
 import java_cup.runtime.Symbol;
+import midik.pruebaspractica1compi1.objetos.Operacion;
+import midik.pruebaspractica1compi1.objetos.Error;
+
+import java.util.ArrayList;
 
 parser code
 {:
     private String definiciones = "";
     private String ejecuciones = "";
-    private Symbol s;
+
+//REPORTES
+    private ArrayList<Operacion> operaciones=new ArrayList<>();
+    private int numGraficasBarras = 0;
+    private int numGraficasPie = 0;
+    private ArrayList<Error> listaErrores = new ArrayList<>();
     
-    public void syntax_error(Symbol s){
-        this.s = s;
+    public ArrayList<Operacion> getOperaciones(){
+        return this.operaciones;
+    }
+
+    public int numGraficasBarras(){
+        return this.numGraficasBarras;
+    }
+
+    public int numGraficasPie(){
+        return this.numGraficasPie;
+    }
+
+    public ArrayList<Error> getErrores(){
+        return this.listaErrores;
+    }
+
+//Errores
+    private Symbol s;
+    private String mensajeFatalError = "";
+    
+    public void syntax_error(Symbol cur_token){
+        this.listaErrores.add(new Error(cur_token.value.toString(),cur_token.right,cur_token.left,"Sintactico","Error sintactico"));
+    }
+
+    public void unrecovered_syntax_error(Symbol s) throws java.lang.Exception {
+        this.mensajeFatalError+= "No se pudo recuperar el analizador. Linea:" + s.right + " Columna:" + s.left;
+    }
+
+    public String getMensajeFatalError(){
+        return this.mensajeFatalError;
     }
 
     public Symbol getS(){
@@ -39,7 +76,7 @@ parser code
 terminal String DEF, BARRAS, PIE, TITULO, EJEX, EJEY, ETIQUETAS, VALORES, UNIR, TIPO, CANTIDAD,
          PORCENTAJE, TOTAL, EXTRA, EJECUTAR, SIGNO_MAS, SIGNO_MENOS, SIGNO_POR, SIGNO_DIVISION,
          PARENTESIS_A, PARENTESIS_C, CORCHETE_A, CORCHETE_C, LLAVE_A, LLAVE_C, DOS_PUNTOS, PUNTO_COMA,
-         COMA, PALABRA;
+         COMA, PALABRA, ERRORS;
 
 terminal Integer ENTERO;
 terminal Double DECIMAL;
@@ -54,20 +91,24 @@ precedence left PARENTESIS_A, PARENTESIS_C;
 start with i;
 
 i ::= DEF d:p1 j                                                      {: agregarDefinicion(p1);   :}
+ | error LLAVE_C                         
+ | error PUNTO_COMA                                        
 ;                                                               
-d ::= PIE:p1 LLAVE_A a:p3 LLAVE_C                                      {: RESULT = p1 + "%" + p3+"&"; :}
-    | BARRAS:p1 LLAVE_A e:p3 LLAVE_C                                   {: RESULT = p1 + "%" + p3+"&"; :}
+d ::= PIE:p1 LLAVE_A a:p3 LLAVE_C                                      {: RESULT = p1 + "%" + p3+"&"; numGraficasPie++;:}
+    | BARRAS:p1 LLAVE_A e:p3 LLAVE_C                                   {: RESULT = p1 + "%" + p3+"&"; numGraficasBarras++;:}
 ;                                              
 j ::= c:p1                                                                      {:RESULT = p1; :}
     | i:p1                                                                      {:RESULT = p1; :}
 ;                                                                     
 c ::= t:p1                                                                      {:RESULT = p1; :}
     | t:p1 c:p2                                                                 {:RESULT = p1 + p2; :}
+
 ;
 t ::= EJECUTAR PARENTESIS_A PALABRA:p1 PARENTESIS_C PUNTO_COMA      {: agregarEjecucion(p1 + "%");:}
 ;
 a ::= p:p1                                                                      {:RESULT = p1; :}
     | p:p1 a:p2                                                                    {:RESULT = p1 + p2; :}
+
 ;
 p ::= s:p1                                                                      {:RESULT = p1 + "%"; :}           
     | f:p1                                                                      {:RESULT = p1 + "%"; :}       
@@ -115,10 +156,10 @@ n ::= EJEX:p1 DOS_PUNTOS:p2 CORCHETE_A etiqueta:p4 CORCHETE_C PUNTO_COMA        
 ;
 o ::= EJEY:p1 DOS_PUNTOS:p2 CORCHETE_A valor:p4 CORCHETE_C PUNTO_COMA               {:RESULT = p1 + p2 + p4; :}
 ;
-expr ::= expr:p1 SIGNO_MAS expr:p2                                      {:RESULT = new Integer(p1+p2); System.out.println("SUMA: " + (p1+p2));:}
-       | expr:p1 SIGNO_MENOS expr:p2                                    {:RESULT = new Integer(p1-p2); :}
-       | expr:p1 SIGNO_POR expr:p2                                      {:RESULT = new Integer(p1*p2); :}
-       | expr:p1 SIGNO_DIVISION expr:p2                                 {:RESULT = new Integer(p1/p2); :}
+expr ::= expr:p1 SIGNO_MAS expr:p2                                      {:RESULT = new Integer(p1+p2);    operaciones.add( new Operacion("Suma",p1right ,p1left,  p1 +"+"+p2)); :}
+       | expr:p1 SIGNO_MENOS expr:p2                                    {:RESULT = new Integer(p1-p2);        operaciones.add( new Operacion("Resta",p1right ,p1left,  p1+ "-"+p2)); :}
+       | expr:p1 SIGNO_POR expr:p2                                      {:RESULT = new Integer(p1*p2);          operaciones.add( new Operacion("Multiplicacion",p1right ,p1left,  p1 +"*"+ p2));  :}
+       | expr:p1 SIGNO_DIVISION expr:p2                                 {:RESULT = new Integer(p1/p2);        operaciones.add( new Operacion("Division",p1right ,p1left, p1+ "/"+p2)); :}
        | PARENTESIS_A expr:p1 PARENTESIS_C                              {:RESULT = new Integer(p1); :}
        | numero:p1                                                      {:RESULT = new Integer(p1); :}
 ;
